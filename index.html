@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="zh-CN" data-language="zh" data-edit-key="coming-soon-page" data-export-name="装修页面">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f4f0">
+  <meta name="description" content="个人主页正在整理中，敬请期待。">
+  <title>准备接入—W1nkxX</title>
+  <style>
+    :root {
+      --paper: #f4f4f0;
+      --ink: #101113;
+      --muted: #6d7076;
+      --line: rgba(16,17,19,.15);
+      --blue: #1557ff;
+      --white: #fff;
+      --content: min(1240px, calc(100vw - 80px));
+      --ease: cubic-bezier(.2,.75,.25,1);
+      --sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", "PingFang SC", monospace;
+    }
+    * { box-sizing: border-box; }
+    html, body { min-width: 320px; min-height: 100%; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 86% 16%, rgba(21,87,255,.1), transparent 30rem),
+        linear-gradient(150deg, #f8f8f5, var(--paper) 58%, #ecece8);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .2;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+    }
+    .grid {
+      position: fixed;
+      inset: 0 auto;
+      left: 50%;
+      width: var(--content);
+      pointer-events: none;
+      opacity: .65;
+      transform: translateX(-50%);
+      background-image: repeating-linear-gradient(90deg, rgba(16,17,19,.05) 0, rgba(16,17,19,.05) 1px, transparent 1px, transparent calc(100% / 12));
+      mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
+    }
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100svh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      width: var(--content);
+      margin: 0 auto;
+      padding: 26px 0 24px;
+    }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .logo {
+      position: relative;
+      width: 158px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+    }
+    .logo img { width: 100%; height: 100%; object-fit: contain; object-position: left center; }
+    .language {
+      display: flex;
+      padding: 3px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.55);
+    }
+    .language button {
+      min-width: 38px;
+      min-height: 32px;
+      padding: 0 9px;
+      border: 0;
+      border-radius: 999px;
+      color: var(--muted);
+      background: transparent;
+      font: 700 10px/1 var(--mono);
+      cursor: pointer;
+    }
+    .language button[aria-pressed="true"] { color: var(--white); background: var(--ink); }
+    :focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
+    [hidden] { display: none !important; }
+
+    .stage {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      align-items: center;
+      gap: 0;
+      padding: clamp(70px, 10vh, 130px) 0 60px;
+    }
+    .copy { grid-column: 1 / span 8; position: relative; z-index: 2; }
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 26px;
+      color: var(--muted);
+      font: 700 10px/1.5 var(--mono);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 34px; height: 2px; background: var(--blue); }
+    h1 {
+      max-width: 900px;
+      margin: 0;
+      font-size: clamp(68px, 9.2vw, 142px);
+      font-weight: 760;
+      line-height: .9;
+      letter-spacing: -.075em;
+    }
+    .lead {
+      max-width: 560px;
+      margin: 34px 0 0;
+      color: #50535a;
+      font-size: clamp(15px, 1.3vw, 18px);
+      line-height: 1.8;
+    }
+    .signal {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 34px;
+      padding: 10px 13px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.5);
+      font: 750 9px/1 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .signal i { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 6px rgba(21,87,255,.1); animation: pulse 2s ease-in-out infinite; }
+
+    .art { grid-column: 9 / -1; position: relative; min-height: 440px; }
+    .art-ring { position: absolute; inset: 6% -12% 9% -24%; border: 1px solid rgba(16,17,19,.18); border-radius: 50%; animation: breathe 7s ease-in-out infinite; }
+    .art-card {
+      position: absolute;
+      inset: 18% -1% 13% 6%;
+      overflow: hidden;
+      color: var(--white);
+      background: var(--blue);
+      box-shadow: 0 35px 70px rgba(21,87,255,.2);
+      transform: rotate(6deg);
+      animation: float 6s ease-in-out infinite;
+    }
+    .art-card::before { content: ""; position: absolute; inset: 16px; border: 1px solid rgba(255,255,255,.55); }
+    .art-card::after { content: ""; position: absolute; left: -20%; top: 49%; width: 140%; height: 1px; background: rgba(255,255,255,.45); transform: rotate(-15deg); }
+    .art-meta { position: absolute; inset: 34px; display: flex; flex-direction: column; justify-content: space-between; font: 700 10px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .art-meta strong { font-size: clamp(62px, 8vw, 112px); line-height: .8; letter-spacing: -.08em; }
+    .art-chip { position: absolute; right: -5%; bottom: 5%; width: 108px; aspect-ratio: 1; display: grid; place-items: center; border: 1px solid var(--ink); border-radius: 50%; background: var(--paper); font: 800 9px/1.5 var(--mono); text-align: center; animation: chip 5s ease-in-out infinite; }
+
+    .bottom { border-top: 1px solid var(--line); }
+    .status-list { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0; padding: 0; list-style: none; }
+    .status-list li { position: relative; padding: 19px 18px 6px 0; border-right: 1px solid var(--line); }
+    .status-list li:last-child { border-right: 0; padding-left: 18px; }
+    .status-list li:nth-child(2) { padding-left: 18px; }
+    .status-name { display: block; color: var(--ink); font-size: 12px; font-weight: 700; }
+    .status-value { display: block; margin-top: 7px; color: var(--muted); font: 700 8px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+    .scan { height: 2px; margin-top: 16px; overflow: hidden; background: rgba(16,17,19,.08); }
+    .scan::after { content: ""; display: block; width: 32%; height: 100%; background: var(--blue); animation: scan 2.8s var(--ease) infinite; }
+    .footnote { display: flex; justify-content: space-between; gap: 20px; margin-top: 20px; color: var(--muted); font: 700 8px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+
+    .copy > *, .art { opacity: 0; transform: translateY(24px); }
+    .ready .copy > * { animation: reveal .75s var(--ease) forwards; }
+    .ready .copy > *:nth-child(2) { animation-delay: .08s; }
+    .ready .copy > *:nth-child(3) { animation-delay: .16s; }
+    .ready .copy > *:nth-child(4) { animation-delay: .24s; }
+    .ready .art { animation: reveal .9s .14s var(--ease) forwards; }
+    .language-switched .copy > * { animation: none !important; opacity: 1; transform: none; }
+    @keyframes reveal { to { opacity: 1; transform: none; } }
+    @keyframes breathe { 50% { transform: scale(1.035) rotate(-2deg); } }
+    @keyframes float { 50% { transform: translateY(-12px) rotate(4deg); } }
+    @keyframes chip { 50% { transform: translateY(10px) rotate(-5deg); } }
+    @keyframes pulse { 50% { transform: scale(.72); opacity: .55; } }
+    @keyframes scan { 0% { transform: translateX(-110%); } 60%,100% { transform: translateX(330%); } }
+
+    @media (max-width: 800px) {
+      :root { --content: calc(100vw - 32px); }
+      .page { padding-top: 18px; }
+      .logo { width: 136px; height: 46px; }
+      .stage { grid-template-columns: 1fr; align-items: start; padding: 78px 0 50px; }
+      .copy, .art { grid-column: 1; }
+      h1 { font-size: clamp(58px, 18vw, 92px); }
+      .art { min-height: 300px; width: min(390px, 100%); margin: 34px auto 0; }
+      .art-card { inset: 15% 5% 12% 7%; }
+      .art-ring { inset: 2% 0 4%; }
+      .art-chip { right: 0; width: 88px; }
+      .status-list { grid-template-columns: 1fr; }
+      .status-list li, .status-list li:nth-child(2), .status-list li:last-child { padding: 15px 0; border-right: 0; border-bottom: 1px solid var(--line); }
+      .status-list li:last-child { border-bottom: 0; }
+      .footnote { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 360px) {
+      h1 { font-size: clamp(50px, 16.8vw, 58px); overflow-wrap: anywhere; text-wrap: balance; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .copy > *, .art { opacity: 1 !important; transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid" aria-hidden="true"></div>
+  <main class="page">
+    <header class="topbar">
+      <div class="logo"><img src="assets/w1nkxx-wordmark-logo.png" alt="W1nkxX"></div>
+      <div class="language" role="group" aria-label="语言切换 / Language switch">
+        <button type="button" data-language="zh" aria-pressed="true">中</button>
+        <button type="button" data-language="en" aria-pressed="false">EN</button>
+      </div>
+    </header>
+
+    <section class="stage" aria-labelledby="title-zh">
+      <div class="copy">
+        <p class="eyebrow" data-edit-id="maintenance-eyebrow">Personal site / work in progress</p>
+        <h1 id="title-zh" data-lang-content="zh" lang="zh-CN" data-edit-id="maintenance-title-zh">正在装修，<br>敬请期待。</h1>
+        <h1 id="title-en" data-lang-content="en" lang="en" data-edit-id="maintenance-title-en" hidden>Under<br>construction.</h1>
+        <p class="lead" data-lang-content="zh" lang="zh-CN" data-edit-id="maintenance-lead-zh">作品与个人信息正在整理中。下一次见面，会是一个更完整的版本。</p>
+        <p class="lead" data-lang-content="en" lang="en" data-edit-id="maintenance-lead-en" hidden>This portfolio is being curated and refined. Come back soon for the complete version.</p>
+        <div class="signal"><i aria-hidden="true"></i><span data-lang-content="zh" lang="zh-CN" data-edit-id="maintenance-signal-zh">持续更新中</span><span data-lang-content="en" lang="en" data-edit-id="maintenance-signal-en" hidden>Work in progress</span></div>
+      </div>
+      <div class="art" aria-hidden="true">
+        <div class="art-ring"></div>
+        <div class="art-card"><div class="art-meta"><span data-edit-id="maintenance-art-label">Private<br>Preview</span><strong data-edit-id="maintenance-art-mark">WIP</strong><span data-edit-id="maintenance-art-year">Personal site / 2026</span></div></div>
+        <div class="art-chip" data-edit-id="maintenance-art-chip">SEE<br>YOU<br>SOON</div>
+      </div>
+    </section>
+
+    <footer class="bottom">
+      <ul class="status-list">
+        <li><span class="status-name" data-lang-content="zh" lang="zh-CN" data-edit-id="maintenance-status-content-zh">内容整理</span><span class="status-name" data-lang-content="en" lang="en" data-edit-id="maintenance-status-content-en" hidden>Content curation</span><span class="status-value" data-edit-id="maintenance-status-content-value">In progress</span><div class="scan"></div></li>
+        <li><span class="status-name" data-lang-content="zh" lang="zh-CN" data-edit-id="maintenance-status-archive-zh">作品归档</span><span class="status-name" data-lang-content="en" lang="en" data-edit-id="maintenance-status-archive-en" hidden>Work archive</span><span class="status-value" data-edit-id="maintenance-status-archive-value">In progress</span><div class="scan"></div></li>
+        <li><span class="status-name" data-lang-content="zh" lang="zh-CN" data-edit-id="maintenance-status-experience-zh">体验调试</span><span class="status-name" data-lang-content="en" lang="en" data-edit-id="maintenance-status-experience-en" hidden>Experience refinement</span><span class="status-value" data-edit-id="maintenance-status-experience-value">In progress</span><div class="scan"></div></li>
+      </ul>
+      <div class="footnote"><span data-edit-id="maintenance-footer-archive">Personal archive / 2026</span><span data-lang-content="zh" lang="zh-CN" data-edit-id="maintenance-footer-zh">这里很快会有新内容</span><span data-lang-content="en" lang="en" data-edit-id="maintenance-footer-en" hidden>Something new is coming</span></div>
+    </footer>
+  </main>
+  <script>
+    (() => {
+      const root = document.documentElement;
+      const buttons = [...document.querySelectorAll('[data-language]')];
+      const setLanguage = (language, userInitiated = true) => {
+        const next = language === 'en' ? 'en' : 'zh';
+        if (userInitiated) document.body.classList.add('language-switched');
+        window.HtmlTools?.save?.();
+        root.dataset.language = next;
+        root.lang = next === 'zh' ? 'zh-CN' : 'en';
+        document.title = '准备接入—W1nkxX';
+        document.querySelector('.stage').setAttribute('aria-labelledby', `title-${next}`);
+        document.querySelectorAll('[data-lang-content]').forEach(node => {
+          const visible = node.dataset.langContent === next;
+          node.hidden = !visible;
+          node.setAttribute('aria-hidden', String(!visible));
+        });
+        buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.language === next)));
+        try { localStorage.setItem('coming-soon-language', next); } catch {}
+      };
+      buttons.forEach(button => button.addEventListener('click', () => setLanguage(button.dataset.language, true)));
+      let initial = 'zh';
+      try { initial = localStorage.getItem('coming-soon-language') || 'zh'; } catch {}
+      setLanguage(initial, false);
+      requestAnimationFrame(() => document.body.classList.add('ready'));
+    })();
+  </script>
+<!-- html-runtime:start -->
+<style id="html-runtime-style">/* Shared editing chrome; independent of homepage/slide layouts. */
+.html-tools{position:fixed;left:50%;top:14px;z-index:10000;padding:10px;display:flex;gap:8px;opacity:0;transition:opacity .15s;background:#20212a;border-radius:10px;color:#fff;transform:translateX(-50%)}
+.edit-hotzone{position:fixed;left:50%;top:0;width:120px;height:68px;z-index:9999;transform:translateX(-50%)}
+.edit-hotzone:hover+.html-tools,.html-tools:hover,.html-tools:focus-within,body.editing .html-tools{opacity:1}
+.html-tools button{position:static;transform:none;opacity:1;pointer-events:auto;font:600 14px/1.4 'PingFang SC','Microsoft YaHei',sans-serif;color:#fff;background:#343744;border:1px solid #777;padding:8px 12px;border-radius:5px;cursor:pointer}
+.html-tools button:focus-visible{outline:3px solid #ffcc68;outline-offset:3px}
+body.editing [data-edit-id]:not([data-note-for]){outline:2px dashed #ed9857;outline-offset:4px;cursor:text}
+.html-status{position:fixed;bottom:50px;left:24px;z-index:10001;background:#20212a;color:#fff;padding:12px 18px;max-width:min(580px,90vw);font:15px/1.6 'PingFang SC',sans-serif}
+.html-status:empty{display:none}
+[data-note-for]{display:none!important}
+@media(hover:none){.html-tools{opacity:1}}
+@media print{.edit-hotzone,.html-tools,.html-status{display:none!important}}
+@media(prefers-reduced-motion:reduce){.html-tools{transition:none}}
+</style>
+<script id="html-runtime">
+/* Shared runtime. Source of truth: assets/html-runtime.js; inline with bundle-html-runtime.mjs. */
+(() => {
+  'use strict';
+  if (location.protocol !== 'file:') return;
+  if (window.HtmlTools) return;
+  const root = document.documentElement;
+  const hotzone = document.createElement('div');
+  hotzone.className = 'edit-hotzone';
+  hotzone.setAttribute('aria-hidden', 'true');
+  const toolbar = document.createElement('div');
+  toolbar.className = 'html-tools';
+  toolbar.innerHTML = '<button class="edit-toggle" aria-pressed="false">编辑</button><button id="exportHtml">导出 HTML</button>';
+  const status = document.createElement('div');
+  status.className = 'html-status'; status.setAttribute('role', 'status');
+  for (const el of [hotzone, toolbar, status]) el.dataset.runtimeGenerated = '';
+  document.body.append(hotzone, toolbar, status);
+  let active = false, warningTimer;
+  const key = (root.dataset.editKey || 'html-edits') + ':' + location.pathname + (root.dataset.editVersion ? ':' + root.dataset.editVersion : '');
+  let saved = {};
+  try { const data = JSON.parse(localStorage.getItem(key) || '{}'); if (data && typeof data === 'object' && !Array.isArray(data)) saved = data; } catch {}
+  const nodes = () => [...document.querySelectorAll('[data-edit-id]')];
+  function notify(text) { status.textContent = text; clearTimeout(warningTimer); warningTimer = setTimeout(() => status.textContent = '', 6000); }
+  function refresh({restore = false} = {}) {
+    const ids = new Set();
+    for (const n of nodes()) {
+      const id = n.dataset.editId;
+      if (!id || ids.has(id)) { notify('编辑 ID 缺失或重复，请先修复页面中的 data-edit-id'); continue; }
+      ids.add(id);
+      if (restore && Object.hasOwn(saved, id) && typeof saved[id] === 'string') n.innerHTML = saved[id];
+      n.contentEditable = String(active && !n.hasAttribute('data-note-for'));
+      n.spellcheck = false;
+    }
+  }
+  function save() {
+    // Retain IDs of temporarily filtered-out items; never map by DOM position.
+    for (const n of nodes()) saved[n.dataset.editId] = n.innerHTML;
+    try { localStorage.setItem(key, JSON.stringify(saved)); }
+    catch { notify('本地保存不可用或空间不足，请导出 HTML 保存修改。'); }
+    document.dispatchEvent(new CustomEvent('html:change'));
+  }
+  function setActive(value) {
+    active = Boolean(value); document.body.classList.toggle('editing', active);
+    toolbar.querySelector('.edit-toggle').textContent = active ? '结束编辑' : '编辑';
+    toolbar.querySelector('.edit-toggle').setAttribute('aria-pressed', String(active));
+    refresh();
+    if (!active) { if (document.activeElement?.closest('[data-edit-id]')) document.activeElement.blur(); save(); }
+  }
+  function exportHTML() {
+    save();
+    const clone = root.cloneNode(true);
+    clone.dataset.editVersion = 'export-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+    clone.querySelector('body').classList.remove('editing');
+    clone.querySelectorAll('[data-runtime-generated]').forEach(n => n.remove());
+    clone.querySelectorAll('[contenteditable]').forEach(n => n.setAttribute('contenteditable', 'false'));
+    document.dispatchEvent(new CustomEvent('html:before-export', {detail: {clone}}));
+    const url = URL.createObjectURL(new Blob(['<!doctype html>\n' + clone.outerHTML], {type:'text/html;charset=utf-8'}));
+    const a = document.createElement('a'); a.href = url;
+    a.download = (root.dataset.exportName || document.title || 'page').replace(/[\\/:*?"<>|]/g, '-') + '.html';
+    a.click(); setTimeout(() => URL.revokeObjectURL(url), 2000);
+  }
+  const isTyping = target => Boolean(target?.closest?.('input,textarea,select,[contenteditable="true"]'));
+  toolbar.querySelector('.edit-toggle').onclick = () => setActive(!active);
+  toolbar.querySelector('#exportHtml').onclick = exportHTML;
+  hotzone.onclick = () => setActive(!active);
+  document.addEventListener('input', e => { if (e.target.closest?.('[data-edit-id]')) save(); });
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') { e.preventDefault(); save(); return; }
+    if (e.key === 'Escape' && active) { e.preventDefault(); setActive(false); return; }
+    if (e.metaKey || e.ctrlKey || e.altKey || isTyping(e.target)) return;
+    if (e.key.toLowerCase() === 'e') { e.preventDefault(); setActive(!active); }
+  });
+  window.HtmlTools = {save, refresh, setActive, exportHTML, notify, isTyping, toolbar, get active() {return active;}, key};
+  refresh({restore:true});
+})();
+
+</script>
+<!-- html-runtime:end -->
+</body>
+</html>
+
