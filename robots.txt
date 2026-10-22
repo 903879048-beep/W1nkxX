@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://w1nkxx.bbroot.com/sitemap.xml
